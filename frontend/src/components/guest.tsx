@@ -28,19 +28,20 @@ const Guests:React.FC=()=>{
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [roleType, setRoleType] = useState('');
-  const [roleName, setRoleName] = useState('');
+  const [Name, setName] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Add your form submission logic here
-    console.log('Form submitted with data:', { phoneNumber, roleType, roleName });
+    console.log('Form submitted with data:', { phoneNumber, roleType,Name });
   };
 
 
     return(
         <>
         <NavBar/>
+        <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="90%" position="absolute" zIndex="-1" />
         <Center>
         {/* Header */}
         <HStack width="100%" justifyContent="center" >
@@ -87,15 +88,30 @@ const Guests:React.FC=()=>{
       {/* Event Button with Popover */}
       <Popover>
         <PopoverTrigger>
-        <Center  m={'10px'}>  <Button colorScheme="blue">Event</Button></Center>
+        <Center  m={'10px'}>  <Button colorScheme="blue">Add Guest</Button></Center>
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
           <PopoverCloseButton />
-          <PopoverHeader>Event Details</PopoverHeader>
+          <PopoverHeader>Guest Details</PopoverHeader>
           <PopoverBody>
           <Box p={4} maxWidth="400px" mx="auto">
             <form onSubmit={handleSubmit}>
+                {/* Event Name Input */}
+                <FormControl mb={4}>
+                <FormLabel htmlFor="name">Name *</FormLabel>
+                <Box display="flex">
+                    <Text mr={2}>+91</Text>
+                    <Input
+                    type="string"
+                    id="Name"
+                    placeholder="eg. Akash"
+                    value={phoneNumber}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    />
+                </Box>
+                </FormControl>
                 {/* Phone Number Input */}
                 <FormControl mb={4}>
                 <FormLabel htmlFor="phoneNumber">Phone Number *</FormLabel>
@@ -125,6 +141,7 @@ const Guests:React.FC=()=>{
                 >
                     <option value="CO-HOST">CO-HOST</option>
                     <option value="GUEST">GUEST</option>
+                    <option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
                 </Select>
                 </FormControl>
 
@@ -146,36 +163,7 @@ const Guests:React.FC=()=>{
                 </FormControl>
                 )}
 
-                {/* Role Name Select for GUEST */}
-                {roleType === 'GUEST' && (
-                <FormControl mb={4}>
-                    <FormLabel htmlFor="roleName">Select Role Name *</FormLabel>
-                    <Select
-                    id="roleName"
-                    placeholder="Select role name"
-                    value={roleName}
-                    onChange={(e) => setRoleName(e.target.value)}
-                    required
-                    >
-                    <option value="UploadPhotos">Upload photos to all the sub-events</option>
-                    <option value="ConfigureSettings">Configure event settings</option>
-                    <option value="AddUsers">Add users or subevents</option>
-                    </Select>
-                </FormControl>
-                )}
 
-                {/* Official Photographer Checkbox for GUEST */}
-                {roleType === 'GUEST' && (
-                <FormControl mb={4}>
-                    <FormLabel>Official Photographer:</FormLabel>
-                    <RadioGroup defaultValue="no">
-                    <Stack direction="row">
-                        <Radio value="yes">Mark all uploads as official for user</Radio>
-                        <Radio value="no">Do not mark uploads as official</Radio>
-                    </Stack>
-                    </RadioGroup>
-                </FormControl>
-                )}
 
                 {/* Submit Button */}
                 <Button type="submit" colorScheme="blue" mt={4}>

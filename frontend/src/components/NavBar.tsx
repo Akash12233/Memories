@@ -1,12 +1,30 @@
 import { Link } from "react-router-dom";
 import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton,  PopoverHeader, PopoverBody,Image ,Flex,Box} from "@chakra-ui/react";
 
+import { useState, useEffect } from 'react';
+
 
 
 const NavBar: React.FC=()=>{
-    const getUser=null;
-    /*getuser.image*/
-    const userImage = getUser ? getUser : "./public/icon7.jpg";
+    const [user, setUser] = useState<any>(null);
+    let userImage ="/icon7.jpg";
+
+
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                const parsedUser = JSON.parse(userData);
+                setUser(parsedUser);
+                
+            }
+        } catch (error) {
+            console.error("Error retrieving user data from localStorage:", error);
+        }
+    }, []);
+    
+    userImage=user?.avatar_url? user?.avatar_url : userImage;
+
 
     return (
         <>
@@ -16,7 +34,7 @@ const NavBar: React.FC=()=>{
             <PopoverTrigger>
                 <Flex align={'center'}>
                 <div className="hover:bg-white hover:text-purple-500 p-2 rounded">
-                getUser.fname
+                {user ? user.firstname : 'Profile'}
                 </div>
                 <Image src={userImage} alt="Profile Icon" boxSize="8" mr="2" />
                 </Flex>

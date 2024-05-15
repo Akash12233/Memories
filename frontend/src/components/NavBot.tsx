@@ -1,44 +1,44 @@
-// Navbar.jsx
 import React from 'react';
-import { ChakraProvider, CSSReset, Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
+import { ChakraProvider, CSSReset, Box, Flex, IconButton, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { InfoIcon, ViewIcon, CalendarIcon, SunIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
- 
-const NavBot :React.FC =  () => {
+
+const NavBot: React.FC = () => {
+  const iconSize = useBreakpointValue({ base: "md", md: "lg" });
+  const textSize = useBreakpointValue({ base: "xs", md: "sm" });
+
   return (
     <ChakraProvider>
       <CSSReset />
       <Box bg="violet" p={4} color="white">
-        <Flex align="center">
-          <VStack spacing={1} align="center" mx={"150px"}>
-            {/* EventHome Section */}
-            <Link to="/event">
-            <IconButton icon={<InfoIcon/>} aria-label="EventHome" />
-            <Text fontSize="xs">EventHome</Text>
-            </Link>
-          </VStack>
+        <Flex align="center" justify="space-around">
+          <Link to="/eventhome">
+            <VStack spacing={1} align="center">
+              <IconButton icon={<InfoIcon />} aria-label="EventHome" size={iconSize} />
+              <Text fontSize={textSize}>EventHome</Text>
+            </VStack>
+          </Link>
 
-          <VStack spacing={1} align="center" mx={'150px'}>
-            {/* Media Section */}
-            <Link to="/media">
-            <IconButton icon={<ViewIcon />} aria-label="Media" />
-            <Text fontSize="xs">Media</Text>
-            </Link>
-          </VStack>
+          <Link to="/media">
+            <VStack spacing={1} align="center">
+              <IconButton icon={<ViewIcon />} aria-label="Media" size={iconSize} />
+              <Text fontSize={textSize}>Media</Text>
+            </VStack>
+          </Link>
 
-          <VStack spacing={1} align="center" mx={'150px'}>
-            {/* SubEvent Section */}
-            <Link to='/subevent'>
-            <IconButton icon={<CalendarIcon />} aria-label="SubEvent" />
-            <Text fontSize="xs">SubEvent</Text></Link>
-          </VStack>
+          <Link to='/subevent'>
+            <VStack spacing={1} align="center">
+              <IconButton icon={<CalendarIcon />} aria-label="SubEvent" size={iconSize} />
+              <Text fontSize={textSize}>SubEvent</Text>
+            </VStack>
+          </Link>
 
-          <VStack spacing={1} align="center" mx={'150px'}>
-            {/* Guest Section */}
-            <Link to='/guest'>
-            <IconButton icon={<SunIcon/>} aria-label="Guest" />
-            <Text fontSize="xs">Guest</Text></Link>
-          </VStack>
+          <Link to='/guest'>
+            <VStack spacing={1} align="center">
+              <IconButton icon={<SunIcon />} aria-label="Guest" size={iconSize} />
+              <Text fontSize={textSize}>Guest</Text>
+            </VStack>
+          </Link>
         </Flex>
       </Box>
     </ChakraProvider>

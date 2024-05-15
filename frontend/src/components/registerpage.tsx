@@ -1,6 +1,7 @@
 import Navbar from '../Navbar';
 import Footer from '../Fotter';
 import React from 'react';
+import axios from 'axios';
 
 
 import {
@@ -19,8 +20,10 @@ import {
     Stack,
   } from '@chakra-ui/react';
   import { useState } from 'react';
+  import { useNavigate } from 'react-router-dom';
   
   const Registerpage: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
       email: '',
       firstname: '',
@@ -48,11 +51,23 @@ import {
       }
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
+      try {
+        // Make a POST request to your backend API endpoint
+        const response = await axios.post('/api/user/register', {
+          email: formData.email,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          password: formData.password,
+        });
   
-      // Your login/registration logic here
-      console.log('Form submitted:', formData);
+        console.log('Registration successful:', response.data);
+        navigate('/loginpage'); 
+      } catch (error) {
+        console.error('Registration failed:', error);
+      }
+
     };
   
     return (

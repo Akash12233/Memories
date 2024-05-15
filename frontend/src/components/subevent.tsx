@@ -56,13 +56,14 @@ const [phoneNumber, setPhoneNumber] = useState('');
     return(
         <>
         <NavBar/>
+        <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="80%" position="absolute" zIndex="-1" />
         <VStack>
         <HStack width="100%" justifyContent="center" >
           <Heading>Getevent.Name</Heading>
           <IconButton icon={<SettingsIcon />} aria-label='Search database'  />
         </HStack>
 
-        <Box p={4} maxWidth="600px" mx="auto">
+      <Box p={4} maxWidth="200%" mx="auto">
       <form onSubmit={handleSubmit}>
         {/* ... (Previous form content) ... */}
 
@@ -120,29 +121,33 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 />
               </FormControl>
               <Button type="button" colorScheme="blue" onClick={handleSubeventSubmit}>
-                Add Subevent
+              Subevent
               </Button>
             </PopoverBody>
           </PopoverContent>
         </Popover>
 
         {/* Section to display all subevents */}
-        <Box mt={4} border={"1px"} borderColor="gray.200" padding="4" borderRadius="md" width={"100vh"} height={"50vh"}>
-        <Text fontSize="lg" fontWeight="bold">
-            All Subevents
+        <Box mt={4} border={"1px"} borderColor="gray.200" padding="4" borderRadius="md" width={{ base: "100%", md:"800px"}} height={"400px"}>
+
+          <Center>
+        
+          <Text fontSize="lg" fontWeight="bold">
+              All Subevents
           </Text>
-          <List>
-            {subevents.map((subevent, index) => (
-              <ListItem key={index}>
-                {subevent.name} - {subevent.location} - {subevent.description} - {subevent.time}
-              </ListItem>
-            ))}
-          </List>
+            <List>
+              {subevents.map((subevent, index) => (
+                <ListItem key={index}>
+                  {subevent.name} - {subevent.location} - {subevent.description} - {subevent.time}
+                </ListItem>
+              ))}
+            </List>
+          </Center>
         </Box>
       </form>
     </Box>
 
-        </VStack>
+</VStack>
         <NavBot/>
         </>
     )

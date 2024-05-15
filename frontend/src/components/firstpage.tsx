@@ -12,119 +12,125 @@ const Firstpage: React.FC = () => {
   return (
     <>
     <Navbar/>
-    <div className='text-5xl font-bold'>
-      <Center bg='white'  color='Black'>
-      New age event assistant & 
-      </Center>
-      <Center bg='white'  color='Black'>
-      AI photo-sharing
-      </Center>
-    </div>
-    <Center bg='white' height={100} color='Black'  className='text-3xl'>
-    Supercharging events for Organisers, Guests, Photographers and Event professionals
-    </Center>
-    <Center height={100}>
-    <Link to="/loginpage">  <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 rounded-full shadow-2xl pl-10 pr-10">
-              Get Started
-      </button></Link>
-    </Center>
-    <Center bg='white' height={200} color='Black'  
-      w='100%'
-      h='200px'
-      bgGradient='linear(to-r, pink.300, purple.300)'
     
-    >
-      <div> <span  className='text-5xl font-bold'>Elevate </span>  <span className='text-xl'>your event experience with   </span> <span className="text-3xl font-extrabold italic text-purple-300"> 
-        Memories
-      </span></div>
-    </Center>
- 
+    <Center bg='white' color='black' textAlign="center" p={4} fontSize={{ base: '3xl', md: '5xl' }} fontWeight="bold">
+                New age event assistant & <br /> AI photo-sharing
+            </Center>
 
-    <Center bg='white' height={200} color='Black'  className='text-3xl'>
-    Make your events talk of the town
-    </Center>
-    
-    <Center>
-    <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-  <Card>
-    <CardHeader>
-      <Heading size='md' className='text-center'> Invite Guests</Heading>
-    </CardHeader>
-    <CardBody>
-      <Text  className='text-center'>Invite guests, co-hosts and vendors to your event, and keep a complete track with sub-event level access control.</Text>
-    </CardBody>
-   <CardFooter  className='mx-10'>
-      <Box  borderWidth='1px' borderRadius='lg' overflow='hidden'><Image src="./public/icon4.jpg"></Image></Box>
-    </CardFooter>
-  </Card>
-  <Card>
-    <CardHeader>
-      <Heading size='md' className='text-center'> AI Photo Sharing</Heading>
-    </CardHeader>
-    <CardBody>
-      <Text className='text-center'>AI photo-sharing with 99.98% accuracy on Facial recognition. Now, your friends will never complain about not getting photos..</Text>
-    </CardBody>
-    <CardFooter>
-    <Box  borderWidth='1px' borderRadius='lg' overflow='hidden' className='mx-10'><Image src="./public/icon3.jpg"></Image></Box>
-    </CardFooter>
-  </Card>
-  <Card>
-    <CardHeader>
-      <Heading size='md' className='text-center'> Event Itinerary</Heading>
-    </CardHeader>
-    <CardBody>
-      <Text  className='text-center'>Create event itinerary and update everyone  on change in timing or venue with Google Calendar & Whatsapp integration.</Text>
-    </CardBody>
-    <CardFooter>
-    < Box borderWidth='1px' borderRadius='lg' overflow='hidden' className='mx-10'><Image src="./public/icon2.jpg"></Image></Box>
-    </CardFooter>
-  </Card>
-  <Card>
-    <CardHeader>
-      <Heading size='md' className='text-center'> Event Landing Page</Heading>
-    </CardHeader>
-    <CardBody>
-      <Text  className='text-center'>Each event gets a beautiful landing page easily shareable through all social media platforms.</Text>
-    </CardBody>
-    <CardFooter>
-    <Box borderWidth='1px' borderRadius='lg' overflow='hidden' className='mx-10'><Image src="./public/icon1.jpg"></Image></Box>
-    </CardFooter>
-  </Card>
-</SimpleGrid>
-</Center>
+            <Center bg='white' color='black' height={100} fontSize={{ base: '2xl', md: '3xl' }} p={4}>
+                Supercharging events for Organisers, Guests, Photographers and Event professionals
+            </Center>
 
-<Center height={100}>
-      <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 rounded-full shadow-2xl pl-10 pr-10">
-              Get Started
-      </button>
-</Center>
+            <Center>
+                <Link to="/loginpage">
+                    <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 rounded-full shadow-2xl px-10">
+                        Get Started
+                    </button>
+                </Link>
+            </Center>
 
-<Flex color='white'>
-  <Center w='750px'  h='500px'>
-    <Box borderWidth='1px' borderRadius='lg' overflow='hidden' className='mx-20'><Image src='./public/m1.jpg' ></Image></Box>
-  </Center>
-  <Box w='750px'  h='300px' className='my-20'>
-  <Card h='300px'>
-    <CardHeader>
-      <Heading size='md' className='text-center text-3xl' bg={'violet'} height={'40px'}> Instantly enjoy photos from the event</Heading>
-    </CardHeader>
-    <CardBody>
-      <Text  className='text-center text-2xl'>
-While official photos can take weeks to arrive, your Samaro gallery will be buzzing with photos even before your event ends as guests take and share photos instantly with Samaro Whatsapp Bot.</Text>
-    </CardBody>
-    <CardFooter>
-    <Text className='text-center text-2xl' textColor={'thistle'}>So everyone can cherish photos without waiting for days. </Text>
-    </CardFooter>
-  </Card>
-  </Box>  
-</Flex>
+            <Center bg='white' height={200} color='black' w='100%' bgGradient='linear(to-r, pink.300, purple.300)' p={4}>
+                <div>
+                    <span className='text-5xl font-bold'>Elevate </span>
+                    <span className='text-xl'>your event experience with </span>
+                    <span className="text-3xl font-extrabold italic text-purple-300">
+                        Memories
+                    </span>
+                </div>
+            </Center>
 
-<Center height={100}>
-<Link to="/loginpage">  <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 rounded-full shadow-2xl pl-10 pr-10">
-              Get Started
-      </button></Link>
-</Center>
+            <Center bg='white' height={200} color='black' fontSize={{ base: '2xl', md: '3xl' }} p={4}>
+                Make your events talk of the town
+            </Center>
 
+            <Center>
+                <SimpleGrid spacing={4} templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+                    <Card>
+                        <CardHeader>
+                            <Heading size='md' className='text-center'> Invite Guests</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text className='text-center'>Invite guests, co-hosts and vendors to your event, and keep a complete track with sub-event level access control.</Text>
+                        </CardBody>
+                        <CardFooter display="flex" justifyContent="center">
+                            <Box borderWidth='1px' borderRadius='lg' overflow='hidden' ><Image src="./public/icon4.jpg"></Image></Box>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <Heading size='md' className='text-center'> AI Photo Sharing</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text className='text-center'>AI photo-sharing with 99.98% accuracy on Facial recognition. Now, your friends will never complain about not getting photos..</Text>
+                        </CardBody>
+                        <CardFooter display="flex" justifyContent="center">
+                            <Box borderWidth='1px' borderRadius='lg' overflow='hidden' ><Image src="./public/icon3.jpg"></Image></Box>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <Heading size='md' className='text-center'> Event Itinerary</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text className='text-center'>Create event itinerary and update everyone on change in timing or venue with Google Calendar & Whatsapp integration.</Text>
+                        </CardBody>
+                        <CardFooter display="flex" justifyContent="center">
+                            <Box borderWidth='1px' borderRadius='lg' overflow='hidden' ><Image src="./public/icon2.jpg"></Image></Box>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <Heading size='md' className='text-center'> Event Landing Page</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text className='text-center'>Each event gets a beautiful landing page easily shareable through all social media platforms.</Text>
+                        </CardBody>
+                        <CardFooter display="flex" justifyContent="center">
+                            <Box borderWidth='1px' borderRadius='lg' overflow='hidden' ><Image src="./public/icon1.jpg"></Image></Box>
+                        </CardFooter>
+                    </Card>
+                </SimpleGrid>
+            </Center>
+
+            <Center>
+                <Link to="/loginpage">
+                    <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 m-10 rounded-full shadow-2xl px-10">
+                        Get Started
+                    </button>
+                </Link>
+            </Center>
+            <Card
+                direction={{ base: 'column', lg: 'row' }}
+                overflow='hidden'
+                variant='outline'
+                    >
+
+                <Center w={{ base: '100%', md: '50%' }} h={{ base: 'auto', md: '300px' }}>
+                    <Image src='./public/m1.jpg' ></Image>
+                </Center>
+                <Box w={{ base: '100%', md: '50%' }} h={{ base: 'auto', md: '300px' }} >
+                    <Card >
+                        <CardHeader>
+                            <Heading size='md' className='text-center text-3xl' bg={'violet'} height={'40px'}> Instantly enjoy photos from the event</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text className='text-center text-2xl'>
+                                While official photos can take weeks to arrive, your gallery will be buzzing with photos even before your event ends as guests take and share photos instantly with Memories Whatsapp Bot.
+                            </Text>
+                        </CardBody>
+                        <CardFooter>
+                            <Text className='text-center text-2xl' textColor={'thistle'}>So everyone can cherish photos without waiting for days. </Text>
+                        </CardFooter>
+                    </Card>
+                </Box>
+              </Card>  
+            <Center>
+                <Link to="/loginpage">
+                    <button className="bg-white-500 hover:bg-purple-600 text-purple border border-purple-500 hover:border-purple-600 p-2 m-10 rounded-full shadow-2xl px-10">
+                        Get Started
+                    </button>
+                </Link>
+            </Center>
     <Footer/>
 
     </>

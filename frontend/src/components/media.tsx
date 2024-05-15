@@ -1,8 +1,8 @@
 import NavBar from "./NavBar";
 import NavBot from "./NavBot";
-import { Box, Divider, Button, Stack, HStack,VStack, Text, IconButton, Center,Heading } from '@chakra-ui/react';
+import { Box, Divider, Button, Stack, HStack,VStack, Text, IconButton, Center,Heading ,Image, Input} from '@chakra-ui/react';
 import { DownloadIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
 
 
@@ -10,8 +10,15 @@ const Media: React.FC = () => {
     const photos = []; // Replace with your actual photo data
     const videos = []; // Replace with your actual video data
 
+    const inputref=useRef(null);
     const [isPhotos, setIsPhotos] = useState(true);
     const [isVideos, setIsVideos] = useState(false);
+
+    const handleFileChange = () => {
+      if (inputref.current !== null) {
+          inputref.current.click();
+        }
+    };
   
     const handleDownloadClick = () => {
       // Handle download logic
@@ -31,6 +38,7 @@ const Media: React.FC = () => {
     return (
      <>
     <NavBar/>
+    <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="90%" position="absolute" zIndex="-1" />
     <HStack width="100%" justifyContent="center" >
           <Heading>Getevent.Name</Heading>
           <IconButton icon={<SettingsIcon />} aria-label='Search database'  />
@@ -38,15 +46,16 @@ const Media: React.FC = () => {
 
     <Box p={4} borderWidth="1px" borderRadius="lg">
       <Stack spacing={4}>
-        <VStack direction="row" justify="space-between" align="center">
-          <HStack spacing={2}>
-            <Box className="text-3xl" border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={"100vh"}>
-            <Text fontSize="xl">Photos: {photos.length}</Text>
+        <VStack direction="row" justify="space-between" align="center" >
+        <HStack spacing={2} direction={{ base: "column", md: "row" }}>
+            <Box className="text-3xl" border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={{ base: "100%", md: "auto" }} maxWidth={{ base: "100%", md: "50vh" }}>
+                <Text fontSize="xl">Photos: {photos.length}</Text>
             </Box>
-            <Box className="text-3xl" border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={"100vh"}>
-            <Text fontSize="xl">Videos: {videos.length}</Text>
+            <Box className="text-3xl" border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={{ base: "100%", md: "auto" }} maxWidth={{ base: "100%", md: "50vh" }}>
+                <Text fontSize="xl">Videos: {videos.length}</Text>
             </Box>
-          </HStack>
+        </HStack>
+
           <HStack>
           <IconButton icon={<DownloadIcon/>} aria-label="Download" colorScheme="blue" onClick={handleDownloadClick}/>
             <Text className="text-xl" color={"purple"}>DownloadALL</Text>
@@ -55,6 +64,30 @@ const Media: React.FC = () => {
         <Divider />
         {/* Section to display photos and videos with filter */}
         {/* Replace with your own logic to render photos and videos */}
+        {/* Photos and Videos Section */}
+      <HStack width="100%" spacing="4">
+        {/* Photos Section */}
+        <Box width="100%" align="start" >
+          <Heading size="md">Photos</Heading>
+          <Box border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={"100%"}>
+            <Center onClick={handleFileChange}>
+              <Image src='./public/upload_photos.png' />
+              <Input type="file" placeholder="Add Photos" multiple ref={inputref} style={{ display: "none" }} />
+            </Center>
+          </Box>
+        </Box>
+
+        {/* Videos Section */}
+        <Box width="100%" align="start" >
+          <Heading size="md">Videos</Heading>
+          <Box border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" width={"100%"}>
+            <Center onClick={handleFileChange}>
+              <Image src='./public/upload_videos.png' />
+              <Input type="file" placeholder="Add Videos" multiple ref={inputref} style={{ display: "none" }} />
+            </Center>
+          </Box>
+        </Box>
+      </HStack>
         <Stack spacing={4}>
           {/* Filter Section */}
           <Stack direction="row" spacing={4}>
@@ -88,6 +121,7 @@ const Media: React.FC = () => {
           ))}
           </Box>
         </Stack>
+
         
       </Stack>
     </Box>

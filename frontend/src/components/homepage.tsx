@@ -1,9 +1,35 @@
-import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner } from '@chakra-ui/react';
 import NavBar from './NavBar';  // Assuming NavBar and Column are components you've created
 import Column from './colmun';
 import { SearchIcon, AddIcon } from '@chakra-ui/icons';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const MyGrid = () => {
+import { Link, useNavigate } from 'react-router-dom';
+
+const Homepage = () => {
+  
+  const [events, setevent] = useState<any>([]);
+  const navigate= useNavigate();
+
+  console.log("user");
+
+  
+  useEffect(() => {
+    // Fetch user data
+    try {
+      
+      axios.get('/api/users/event')
+      .then(response => setevent(response.data));
+
+    } catch (error) {
+      console.log(error,'Error fetching user data:' );
+      //navigate('/');
+    }
+    
+    
+  });
+
   return (
     <ChakraProvider>
       <Grid
@@ -31,10 +57,23 @@ const MyGrid = () => {
                 </InputLeftElement>
                 <Input type="text" placeholder="Search..." />
                 </InputGroup>
-
+                <Link to="/event">
                 <Button mt="4" colorScheme="teal" leftIcon={<AddIcon />}>
                 Create Event
                 </Button>
+                </Link>
+                </Box>
+                <Box>
+                  {events? events.map((event: any) => (
+                    <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" m="2">
+                    <Image src={event.image}/>
+                    <Box p="4">
+                      <Text fontSize="xl" fontWeight="bold" mb="2">{event.title}</Text>
+                      <Text fontSize="sm" color="gray.500" mb="2">{event.description}</Text>                    
+                    </Box>
+                  </Box>
+                    
+                  )) : Spinner}
                 </Box>
         </GridItem>
       </Grid>
@@ -42,4 +81,4 @@ const MyGrid = () => {
   );
 };
 
-export default MyGrid;
+export default Homepage;
