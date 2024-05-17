@@ -1,42 +1,57 @@
 import { Link } from "react-router-dom";
-import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton,  PopoverHeader, PopoverBody,Image ,Flex,Box} from "@chakra-ui/react";
-
+import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton,  PopoverHeader, PopoverBody,Image ,Flex,Box, Button} from "@chakra-ui/react";
+import axios from "axios";
 import { useState, useEffect } from 'react';
-
+import { useAuthContext } from "../hooks/useAuthContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 
 const NavBar: React.FC=()=>{
     const [user, setUser] = useState<any>(null);
     let userImage ="/icon7.jpg";
-
-
+    const navigate = useNavigate();
+    const {dispatch} = useAuthContext();
     useEffect(() => {
-        try {
-            const userData = localStorage.getItem('user');
-            if (userData) {
-                const parsedUser = JSON.parse(userData);
-                setUser(parsedUser);
-                
-            }
-        } catch (error) {
-            console.error("Error retrieving user data from localStorage:", error);
-        }
+        axios.get('/api/user/current-user')
+        .then(response => {
+            setUser(response.data.data);
+        
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }, []);
     
     userImage=user?.avatar_url? user?.avatar_url : userImage;
+
+    const handlelogout = () => {
+        axios.post('/api/user/logout')
+        .then(response => {
+            setUser(null); // Assuming setUser is a function to update the user state
+            localStorage.removeItem("user");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessToken");
+            dispatch({ type: "LOGOUT", payload: null, refreshToken: null, accessToken: null });
+            navigate('/');
+    
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
 
     return (
         <>
             <Box className="bg-white-500 p-4 text-silver flex justify-between " boxShadow="md">
-            <Link to="/" className="text-3xl font-extrabold italic text-purple-300 hover:bg-white hover:text-purple-500 p-2 rounded">Memories</Link>
+            <Link to="/homepage" className="text-3xl font-extrabold italic text-purple-300 hover:bg-white hover:text-purple-500 p-2 rounded">Memories</Link>
             <Popover>
             <PopoverTrigger>
                 <Flex align={'center'}>
                 <div className="hover:bg-white hover:text-purple-500 p-2 rounded">
                 {user ? user.firstname : 'Profile'}
                 </div>
-                <Image src={userImage} alt="Profile Icon" boxSize="8" mr="2" />
+                <Image src={userImage} alt="Profile Icon" boxSize="8" mr="2" borderRadius={'full'} />
                 </Flex>
             </PopoverTrigger>
             <PopoverContent>
@@ -47,24 +62,24 @@ const NavBar: React.FC=()=>{
                 <Link to="/profile" className="hover:bg-white hover:text-purple-500 p-2 rounded">
                     <PopoverHeader fontWeight="semibold">
                     <Flex align={'center'}>
-                    <Image src="./public/profile.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Profile
+                    <Image src="/profile.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Profile
                     </Flex>
                     </PopoverHeader>
                 </Link>
                 <Link to="/myaccount" className="hover:bg-white hover:text-purple-500 p-2 rounded">
                     <PopoverHeader fontWeight="semibold">
                     <Flex align={'center'}>
-                    <Image src="./public/myaccount.jpg" alt="Myaccount Icon" boxSize="4" mr="2" />My Account
+                    <Image src="/myaccount.jpg" alt="Myaccount Icon" boxSize="4" mr="2" />My Account
                     </Flex>
                     </PopoverHeader>
                 </Link>
-                <Link to="/logout" className="hover:bg-white hover:text-purple-500 p-2 rounded">
+                <Box onClick={handlelogout} backgroundColor={"transparent"} cursor="pointer">
                     <PopoverHeader fontWeight="semibold">
                     <Flex align={'center'}>
-                    <Image src="./public/logout.jpg" alt="Logout Icon" boxSize="4" mr="2" />Logout
+                    <Image src="/logout.jpg" alt="Logout Icon" boxSize="4" mr="2" />Logout
                     </Flex>
                     </PopoverHeader>
-                </Link>
+                </Box>
                 </PopoverBody>
             </PopoverContent>
             </Popover>

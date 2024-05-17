@@ -7,7 +7,7 @@ const createsubEventQuery = async () => {
         event_name VARCHAR(100) NOT NULL,
         event_description TEXT,
         location VARCHAR(100),
-        start_date TIMESTAMP,
+        start_date VARCHAR(100),
         event_id int
     );
     

@@ -1,28 +1,36 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { VStack, Heading, IconButton, Box, Center, Text,Image } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import NavBar from "./NavBar";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NavBot from "./NavBot";
+
+
 
 const Eventhome: React.FC = () => {
   const [event, setEvent] = useState({});
+  const { id } = useParams();
+  localStorage.setItem("event_id", id);
+  let banner_url="./public/banner.jpg";
+
+  useEffect(() => {
+    // Fetch user data
+    axios.get(`/api/event/geteventbyid/${id}`)
+      .then((response) => {
+        console.log(response.data.data);
+        setEvent(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        //navigate("/");
+      });
+  }, []);
+
   
-  const banner_url="./public/banner.jpg";
 
+  banner_url= event? event.banner_url : banner_url;
  
-    try {
-      //const response = axios.get("/api/event");
-      console.log("Event created successfully:", response);
-      // Reset form fields
-      //setEvent(response.event);
-
-    } catch (error) {
-      // Handle error
-      console.error("Error creating event:", error);
-    }
-    
 
   return (
     <>
@@ -34,11 +42,12 @@ const Eventhome: React.FC = () => {
             {/* Header */}
             <Center width="100%">
               <Heading size="lg">
-               eventName
+               {event? event.event_name : "Event Name"}
               </Heading>
-              <Link to="/general">
-                <IconButton icon={<SettingsIcon />} aria-label="Search database" size="lg" />
-              </Link>
+              <Link to={`/general/${id}`}>
+            <IconButton icon={<SettingsIcon />} aria-label='Search database' />
+          </Link>
+
               </Center>
 
             <Center width="100%">
@@ -53,7 +62,7 @@ const Eventhome: React.FC = () => {
               <Text textStyle="bold" fontSize="xl">
                 Event Details
               </Text>
-              <Text>eventDescription</Text>
+              <Text>{event? event.event_description : "Event Details"}</Text>
             </Box>
             
 

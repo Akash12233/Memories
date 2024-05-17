@@ -30,13 +30,13 @@ const App: React.FC = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/createevent" element={<CreateEvent />} />
           <Route path="/event" element={<Event />} />
-          <Route path="/guest" element={<Guests />} />
-          <Route path="/media" element={<Media />} />
-          <Route path="/subevent" element={<Subevent />} />
-          <Route path="/general" element={<General />} />
-          <Route path="/whatsapp" element={<Whatsapp />} />
-          <Route path="/sharing" element={<Sharing />} />
-          <Route path="/eventhome" element={<Eventhome />} />
+          <Route path="/guest/:id" element={<Guests />} />
+          <Route path="/media/:id" element={<Media />} />
+          <Route path="/subevent/:id" element={<Subevent />} />
+          <Route path="/general/:id" element={<General />} />
+          <Route path="/whatsapp/:id" element={<Whatsapp />} />
+          <Route path="/sharing/:id" element={<Sharing />} />
+          <Route path="/eventhome/:id" element={<Eventhome />} />
         </Routes>
       </Router>
     </AuthContextProvider>

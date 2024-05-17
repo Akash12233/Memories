@@ -17,24 +17,76 @@ import { Center, Heading, IconButton, HStack ,Box, VStack,Text,Popover,
 import { SettingsIcon } from "@chakra-ui/icons";
 import NavBar from "./NavBar";
 import NavBot from "./NavBot";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Guests:React.FC=()=>{
-    const [owner, setOwner] = useState<any>([""]);
-    const [cohost, setCohost]=useState<any>([""]);
-    const [photographers, setphotographers]=useState<any>([""]);
-    const [guest,setGuest]=useState<any>([""]);
-    const [participants, setParticipants]=useState<any>([""]);
+  const [formData, setFormData] = useState({
+    name: '',
+    phoneNumber: '',
+    roleType: '',
+  })
+  const {id} = useParams();
+  const [guest, setGuest] = useState([]);
+  const [event, setEvent] = useState({});
+  const owner= 1;
+  const [cohost,setCohost]=useState([]);
+  const [photographer,setPhotographer]=useState([]);
+  const [justguest, setJustguest] = useState([]);
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [roleType, setRoleType] = useState('');
-  const [Name, setName] = useState('');
+  useEffect(() => {
+    // Fetch user data
+    axios.get(`/api/event/geteventbyid/${id}`)
+      .then((response) => {
+        console.log(response.data.data);
+        setEvent(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },[]);
+
+  useEffect(() => {
+    axios.get(`/api/guest/getguest/${id}`)
+      .then((response) => {
+        console.log(response.data.data);
+        setGuest(response.data.data.guest);
+        setCohost(response.data.data.cohost);
+        setPhotographer(response.data.data.photographer);
+        setJustguest(response.data.data.justguest);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },[])
+
+  
+
+  
+
+  const handleInputChange = (field, value) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
+    axios.post(`/api/guest/addguest/${id}`, {
+      name: formData.name,
+      mobile: formData.phoneNumber,
+      role: formData.roleType,
+    })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    // Add your form submission logic here
-    console.log('Form submitted with data:', { phoneNumber, roleType,Name });
   };
 
 
@@ -45,8 +97,11 @@ const Guests:React.FC=()=>{
         <Center>
         {/* Header */}
         <HStack width="100%" justifyContent="center" >
-          <Heading>Getevent.Name</Heading>
-          <IconButton icon={<SettingsIcon />} aria-label='Search database'  />
+          <Heading>{event?.event_name}</Heading>
+          <Link to={`/general/${id}`}>
+            <IconButton icon={<SettingsIcon />} aria-label='Search database' />
+          </Link>
+
         </HStack>
         </Center>
         <Box width="100%" marginBottom="4" border={"1px"} borderColor="gray.200" padding="4" borderRadius="md">
@@ -58,19 +113,19 @@ const Guests:React.FC=()=>{
       <Flex>
         <Box p={4} borderWidth="1px" borderRadius="lg" flex="1" >
           <Text fontSize="lg" fontWeight="bold">Owner of Event</Text>
-          <Text>{owner.length}</Text>
+          <Text>{owner}</Text>
         </Box>
         <Box p={4} borderWidth="1px" borderRadius="lg" flex="1">
           <Text fontSize="lg" fontWeight="bold">No of Co-hosts</Text>
-          <Text>{cohost.length}</Text>
+          <Text>{cohost}</Text>
         </Box>
         <Box p={4} borderWidth="1px" borderRadius="lg" flex="1">
           <Text fontSize="lg" fontWeight="bold">No of Photographers</Text>
-          <Text>{photographers.length}</Text>
+          <Text>{photographer}</Text>
         </Box>
         <Box p={4} borderWidth="1px" borderRadius="lg" flex="1">
           <Text fontSize="lg" fontWeight="bold">No of Guests</Text>
-          <Text>{guest.length}</Text>
+          <Text>{justguest}</Text>
         </Box>
       </Flex>
 
@@ -79,8 +134,8 @@ const Guests:React.FC=()=>{
       <Box p={4} borderWidth="1px" borderRadius="lg" height={"50vh"}>
         <Text fontSize="lg" fontWeight="bold">Participants</Text>
         <Stack spacing={2}>
-          {participants.map((participant, index) => (
-            <Text key={index}>{participant}</Text>
+          {guest &&  guest.map((participant) => (
+            <Text key={participant.id}> {participant.guest_name}</Text>
           ))}
         </Stack>
       </Box>
@@ -101,13 +156,11 @@ const Guests:React.FC=()=>{
                 <FormControl mb={4}>
                 <FormLabel htmlFor="name">Name *</FormLabel>
                 <Box display="flex">
-                    <Text mr={2}>+91</Text>
                     <Input
                     type="string"
                     id="Name"
                     placeholder="eg. Akash"
-                    value={phoneNumber}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
                     required
                     />
                 </Box>
@@ -121,8 +174,7 @@ const Guests:React.FC=()=>{
                     type="tel"
                     id="phoneNumber"
                     placeholder="Enter 10 digit number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
                     required
                     pattern="[0-9]{10}"
                     />
@@ -135,8 +187,7 @@ const Guests:React.FC=()=>{
                 <Select
                     id="roleType"
                     placeholder="Select role type"
-                    value={roleType}
-                    onChange={(e) => setRoleType(e.target.value)}
+                    onChange={(e) => handleInputChange('roleType', e.target.value)}
                     required
                 >
                     <option value="CO-HOST">CO-HOST</option>
@@ -144,42 +195,22 @@ const Guests:React.FC=()=>{
                     <option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
                 </Select>
                 </FormControl>
-
-                {/* Role Name Select for CO-HOST */}
-                {roleType === 'CO-HOST' && (
-                <FormControl mb={4}>
-                    <FormLabel htmlFor="roleName">Select Role Name *</FormLabel>
-                    <Select
-                    id="roleName"
-                    placeholder="Select role name"
-                    value={roleName}
-                    onChange={(e) => setRoleName(e.target.value)}
-                    required
-                    >
-                    <option value="UploadPhotos">Upload photos to all the sub-events</option>
-                    <option value="ConfigureSettings">Configure event settings</option>
-                    <option value="AddUsers">Add users or subevents</option>
-                    </Select>
-                </FormControl>
-                )}
-
-
-
+          
                 {/* Submit Button */}
                 <Button type="submit" colorScheme="blue" mt={4}>
                 Submit
                 </Button>
             </form>
     </Box>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-      </Box>
-            </HStack>
-        </VStack>
-        </Box>
-        <NavBot/>
-        </>
+    </PopoverBody>
+  </PopoverContent>
+  </Popover>
+  </Box>
+  </HStack>
+  </VStack>
+  </Box>
+  <NavBot/>
+  </>
     );
 };
 

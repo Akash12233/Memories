@@ -9,7 +9,7 @@ import createimageQuery from "./modals/image.modal.js";
 import createVideoQuery from "./modals/video.modal.js";
 
 dotenv.config({
-    path: './.env.sample'
+    path: './.env'
 })
 
 

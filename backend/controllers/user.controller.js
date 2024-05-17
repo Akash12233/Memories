@@ -217,12 +217,12 @@ const adduser = asyncHandler(async (req, res, next) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-    const { userId } = req.body;
-        // Clear the refresh token for the user in the database
+    const user = req.user;
+    console.log(user);
         const clearRefreshTokenQuery = `
-            UPDATE User SET refreshToken = NULL WHERE id = ?;
+            UPDATE User SET refresh_token = NULL WHERE id = ?;
         `;
-        await db.promise().query(clearRefreshTokenQuery, [userId]);
+        await db.promise().query(clearRefreshTokenQuery, [user.id]);
 
         // Set options for cookies
         const options = {
@@ -292,33 +292,31 @@ const getcurrentuser = asyncHandler(async (req, res) => {
 
 const updateAccountDetails = asyncHandler( async (req, res) => {
     const userId = req.user.id;
-    console.log(userId);
+
     const { firstname, lastname, email, mobilenumber } = req.body;
     if ([firstname, lastname, email, mobilenumber].some((field) => !field || field.trim() === "")) {
         throw new Error("All fields are required");
     } 
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    console.log(req.files);
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required")
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     if (!avatar) {
-        throw new ApiError(400, "Avatar file is required")
+        throw new ApiError(400, "Error in uploading cloudinary")
     }
-   
-    await db.promise().query('UPDATE User SET firstName = ?, lastName= ?, email = ?, mobile_number = ?,  avatar_url = ? WHERE id = ?', [firstname, lastname, email, mobilenumber, userId]);
 
+    await db.promise().query('UPDATE User SET firstname = ?, lastname= ?, email = ?, mobile_number = ?,  avatar_url = ? WHERE id = ?', [firstname, lastname, email, mobilenumber,avatar.url, userId]);
+    
         // Fetch updated user from the database
         const [userRows] = await db.promise().query('SELECT * FROM User WHERE id = ?', [userId]);
         const user = userRows[0];
 
-    return res 
+    return res
     .status(200)
-    .json(new ApiResponse(200, user, "Account details updated successfully"));
-        
+    .json(new ApiResponse( 200, user,"Account details updated successfully" ));
    
 
 });

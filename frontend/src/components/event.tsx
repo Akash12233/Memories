@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState} from "react";
 import { VStack, Heading, IconButton, Input, Box, Center, Text, Button, Textarea } from "@chakra-ui/react";
 import { SettingsIcon, AddIcon } from "@chakra-ui/icons";
 import NavBar from "./NavBar";
@@ -6,10 +6,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Event: React.FC = () => {
-  const [eventName, setEventName] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const [bannerImage, setBannerImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState({
+    eventName: "",
+    eventDescription: "",
+    bannerImage: null,
+  })
+
   const inputref = useRef<HTMLInputElement>(null);
+  
+
+  const handleInputChange = ( field, value) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
+  };
 
   const handleFileChange = () => {
     if (inputref.current !== null) {
@@ -19,28 +27,33 @@ const Event: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Prepare form data
-    const formData = new FormData();
-    formData.append("eventName", eventName);
-    formData.append("eventDescription", eventDescription);
-    if (bannerImage) {
-      formData.append("bannerImage", bannerImage);
-    }
 
+    console.log(formData);
     try {
-      
-      // Handle success
-      console.log("Event created successfully:", response.data);
-      // Reset form fields
-      setEventName("");
-      setEventDescription("");
-      setBannerImage(null);
+
+        axios.post("/api/event/addevent", {
+          event_name: formData.eventName, 
+          event_description :formData.eventDescription, 
+          banner: formData.bannerImage
+        },
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          }
+      })
+        .then((response) => {
+          console.log(response.data);
+        })
+        
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (error) {
       // Handle error
       console.error("Error creating event:", error);
     }
   };
-
+  
   return (
     <>
       <NavBar />
@@ -51,7 +64,7 @@ const Event: React.FC = () => {
             {/* Header */}
             <Center width="100%">
               <Heading size="lg">
-                <Input placeholder="Event Name" value={eventName} onChange={(e) => setEventName(e.target.value)} />
+                <Input placeholder="Event Name" onChange={(e) => handleInputChange('eventName' ,e.target.value)} />
               </Heading>
               <Link to="/general">
                 <IconButton icon={<SettingsIcon />} aria-label="Search database" size="lg" />
@@ -62,7 +75,7 @@ const Event: React.FC = () => {
             <Box width="100%" padding="4" borderRadius="md" bg="gray.100">
               <Center onClick={handleFileChange}>
                 <IconButton isRound variant="solid" colorScheme="teal" aria-label="Done" fontSize="20px" icon={<AddIcon />} />
-                <input type="file" ref={inputref} style={{ display: "none" }} onChange={(e) => setBannerImage(e.target.files?.[0] || null)} />
+                <input type="file" ref={inputref} style={{ display: "none" }} onChange={(e) => handleInputChange('bannerImage',  e.target.files?.[0])} accept="image/*" />
               </Center>
               <Center>
                 <Text textColor="purple">Add Event Banner Image</Text>
@@ -74,7 +87,7 @@ const Event: React.FC = () => {
               <Text textStyle="bold" fontSize="xl">
                 Event Details
               </Text>
-              <Textarea placeholder="Event Description" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
+              <Textarea placeholder="Event Description"  onChange={(e) => handleInputChange( 'eventDescription', e.target.value)} />
             </Box>
 
             {/* Submit Button */}

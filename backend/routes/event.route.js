@@ -5,8 +5,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const eventrouter = Router();
 
-eventrouter.route("/addevent").post(
-    verifyJWT,
+eventrouter.route("/addevent").post(verifyJWT,
     upload.fields([
         {
             name: "banner",

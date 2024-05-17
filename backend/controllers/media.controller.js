@@ -5,24 +5,24 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const addimage = asyncHandler(async (req, res) => {
-    const event_id = req.params;
-    const images = req.files?.images;
-    //req.files?.banner[0]?.path;
-    
+    const {id} = req.params;
+    const images = req.files;
+
     if (!images) {
         throw new ApiError(400, "Images file is required")
     }
 
-    images.map(image => async () => {
+    await Promise.all(images.map(async (image) => {
         const imageLocalPath = image.path;
-        const image_url = uploadOnCloudinary(imageLocalPath);
+        console.log(imageLocalPath);
+        const image_url = await uploadOnCloudinary(imageLocalPath);
         if (!image_url) {
-            throw new ApiError(400, "Image file is required")
+            throw new ApiError(400, "Image file is required");
         }
-
         const insertQuery = `INSERT INTO Images (imageurl, event_id) VALUES (?, ?);`;
-        await db.promise().query(insertQuery, [image_url, event_id]);
-    });
+        await db.promise().query(insertQuery, [image_url.url, id]);
+    }));
+    
 
     return res
         .status(201)
@@ -30,27 +30,27 @@ const addimage = asyncHandler(async (req, res) => {
 });
 
 const addvideo = asyncHandler(async (req, res) => {
-    const event_id = req.params;
-    const videos = req.files?.videos;
+    const {id} = req.params;
+    const videos = req.files;
     
     if (!videos) {
         throw new ApiError(400, "Images file is required")
     }
 
-    videos.map(video => async () => {
+    await Promise.all(videos.map(video => async () => {
         const videoLocalPath = video.path;
         const video_url = uploadOnCloudinary(videoLocalPath);
         if (!video_url) {
-            throw new ApiError(400, "Image file is required")
+            throw new ApiError(400, "Video file is required")
         }
 
         const insertQuery = `INSERT INTO Images (videourl, event_id) VALUES (?, ?);`;
-        await db.promise().query(insertQuery, [video_url, event_id]);
-    });
+        await db.promise().query(insertQuery, [video_url.url, id]);
+    }));
 
     return res
         .status(201)
-        .json(new ApiResponse(201, "Images added successfully"));
+        .json(new ApiResponse(201, "Video added successfully"));
 });
 
 const getimage = asyncHandler(async (req, res) => {
@@ -61,7 +61,7 @@ const getimage = asyncHandler(async (req, res) => {
     if (!images) {
         throw new ApiError(404, "Images not found");
     }
-    return res.status(200).json(new ApiResponse(200, "Images fetched successfully", images));
+    return res.status(200).json(new ApiResponse(200,  images,"Images fetched successfully"));
 });
 
 const getvideo = asyncHandler(async (req, res) => {
@@ -72,7 +72,7 @@ const getvideo = asyncHandler(async (req, res) => {
     if (!videos) {
         throw new ApiError(404, "Videos not found");
     }
-    return res.status(200).json(new ApiResponse(200, "Videos fetched successfully", videos));
+    return res.status(200).json(new ApiResponse(200 , videos , "Videos fetched successfully"));
 });
 
 export { addimage, addvideo, getimage, getvideo };

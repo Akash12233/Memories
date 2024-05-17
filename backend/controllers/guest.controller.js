@@ -5,8 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const addguest = asyncHandler(async (req, res) => {
     const {name, mobile, role} = req.body;
-    const id = req.params;
-
+    const {id} = req.params;
     if(!name || !mobile || !role){
         throw new ApiError(400, "All fields are required");
     }
@@ -22,13 +21,27 @@ const addguest = asyncHandler(async (req, res) => {
 
 const getguest = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const getguestQuery = `SELECT * FROM guest WHERE event_id = ?;`;
+    const getguestQuery = `SELECT * FROM Guest WHERE event_id = ?;`;
     const rows = await db.promise().query(getguestQuery, [id]);
     const guest = rows[0];
     if (!guest) {
         throw new ApiError(404, "Guest not found");
     }
-    return res.status(200).json(new ApiResponse(200, "Guest fetched successfully", guest));
+    let cohost =0;
+    let photographer=0;
+    let justguest =0;
+
+    guest.map(guest=>{
+        if(guest.role_name === "Cohost"){
+            cohost++;
+        }else if(guest.role_name === "Photographer"){
+            photographer++;
+        }else{
+            justguest++;
+        }
+    })
+    
+    return res.status(200).json(new ApiResponse(200, {cohost, photographer, justguest, guest}, "Guest fetched successfully"));
 });
 
 export { addguest, getguest };

@@ -1,4 +1,4 @@
-import { Grid, GridItem ,Box, Input, Avatar, VStack, Text,Button,Flex,IconButton, Center} from "@chakra-ui/react";
+import { Grid, GridItem ,Box, Input, Avatar, VStack, Text,Button,Flex,IconButton} from "@chakra-ui/react";
 import NavBar from './NavBar';  // Assuming NavBar and Column are components you've created
 import Column from './colmun';
 import { AddIcon} from "@chakra-ui/icons";
@@ -20,6 +20,7 @@ const Profile: React.FC =()=>{
   });
   const navigate = useNavigate();
   const handleInputChange = (field, value) => {
+    
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
@@ -45,18 +46,25 @@ const Profile: React.FC =()=>{
   const handleSubmit = (e) => {
       e.preventDefault();
       console.log('Form submitted with data:', {...formData});
-      try {
-        const response = axios.post('/api/user/update-account', {
+
+        axios.post('/api/user/update-account', {
           email: formData.email,
           firstname: formData.firstname,
           lastname: formData.lastname,
           mobilenumber: formData.mobilenumber,
           avatar: formData.avatar
-        });
+        },
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          }
+      })
+      .then((response) => {
         console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
       
   };
 
@@ -98,7 +106,7 @@ const Profile: React.FC =()=>{
                     fontSize='20px'
                     icon={<AddIcon />}
                     />
-                    <input  type='file' ref={inputref} style={{display:"none"}} onChange={(e) => handleInputChange('avatar', e.target.files[0])} / >
+                    <input  type='file' ref={inputref} style={{display:"none"}} onChange={(e) => handleInputChange('avatar', e.target.files?.[0])} / >
                   </div>
                 </Flex>
 

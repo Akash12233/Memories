@@ -1,4 +1,4 @@
-import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner } from '@chakra-ui/react';
+import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner, List } from '@chakra-ui/react';
 import NavBar from './NavBar';  // Assuming NavBar and Column are components you've created
 import Column from './colmun';
 import { SearchIcon, AddIcon } from '@chakra-ui/icons';
@@ -17,18 +17,17 @@ const Homepage = () => {
   
   useEffect(() => {
     // Fetch user data
-    try {
-      
-      axios.get('/api/users/event')
-      .then(response => setevent(response.data));
-
-    } catch (error) {
-      console.log(error,'Error fetching user data:' );
-      //navigate('/');
-    }
+    axios.get('/api/event/geteventbyuser')
+    .then((response) => {
+      console.log(response.data.data);
+      setevent(response.data.data);
+    })
+    .catch((error) => {
+      console.error(error);
+      //navigate(/);
+    });
     
-    
-  });
+  },[]);
 
   return (
     <ChakraProvider>
@@ -65,13 +64,17 @@ const Homepage = () => {
                 </Box>
                 <Box>
                   {events? events.map((event: any) => (
+                    <List key={event.id}>
+                    <Link to={`/eventhome/${event.id}`}>
                     <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" m="2">
-                    <Image src={event.image}/>
+                    <Image src={event.banner_url}/>
                     <Box p="4">
-                      <Text fontSize="xl" fontWeight="bold" mb="2">{event.title}</Text>
-                      <Text fontSize="sm" color="gray.500" mb="2">{event.description}</Text>                    
+                      <Text fontSize="xl" fontWeight="bold" mb="2">{event.event_name}</Text>
+                      <Text fontSize="sm" color="gray.500" mb="2">{event.event_description}</Text>                    
                     </Box>
                   </Box>
+                  </Link>
+                  </List>
                     
                   )) : Spinner}
                 </Box>

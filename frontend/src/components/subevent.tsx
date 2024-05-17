@@ -2,7 +2,8 @@ import { VStack ,HStack,Heading,IconButton,Center} from "@chakra-ui/react";
 import NavBar from "./NavBar"
 import NavBot from "./NavBot"
 import { SettingsIcon } from "@chakra-ui/icons";
-import React, { useState } from 'react';
+import { useParams  } from 'react-router-dom';
+import { useState, useEffect } from "react";
 import {
   Box,
   Input,
@@ -20,37 +21,66 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
-
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 const Subevent: React.FC=()=>{
 
-const [phoneNumber, setPhoneNumber] = useState('');
-  const [roleType, setRoleType] = useState('');
-  const [roleName, setRoleName] = useState('');
-  const [subevents, setSubevents] = useState([]);
-  const [newSubevent, setNewSubevent] = useState({
+  const [event, setEvent] = useState({});
+  const [subevents, setSubevent]=useState([]);
+
+  const [formdata, setFormData] = useState({
     name: '',
     location: '',
     description: '',
-    time: '',
+    time: ''
   });
 
-  const handleSubmit = (e) => {
+  const {id} = useParams();
+    useEffect(() => {
+      // Fetch user data
+      axios.get(`/api/event/geteventbyid/${id}`)
+        .then((response) => {
+          console.log(response.data.data);
+          setEvent(response.data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          //navigate("/");
+        });
+    },[]);
+
+    useEffect(() => {
+      axios.get(`/api/subevent/getsubEventbyid/${id}`)
+        .then((response) => {
+          console.log(response.data.data);
+          setSubevent(response.data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          //navigate("/");
+        });
+    },[])
+
+    const handleInputChange = (field, value)=> {
+     setFormData((prevData) =>({ ...prevData, [field]: value }));
+    };
+  
+
+  const handleSubeventSubmit = (e) => {
     e.preventDefault();
-
-    // Add your form submission logic here
-    console.log('Form submitted with data:', { phoneNumber, roleType, roleName });
-  };
-
-  const handleSubeventSubmit = () => {
-    setSubevents([subevents, newSubevent]);
-    setNewSubevent({
-      name: '',
-      location: '',
-      description: '',
-      time: '',
+    console.log(formdata);
+    axios.post(`/api/subevent/addsubevent/${id}`, formdata,
+    
+  )
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
     });
+    
   };
 
     return(
@@ -59,15 +89,15 @@ const [phoneNumber, setPhoneNumber] = useState('');
         <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="80%" position="absolute" zIndex="-1" />
         <VStack>
         <HStack width="100%" justifyContent="center" >
-          <Heading>Getevent.Name</Heading>
-          <IconButton icon={<SettingsIcon />} aria-label='Search database'  />
+          <Heading>{event.event_name}</Heading>
+          <Link to={`/general/${id}`}>
+            <IconButton icon={<SettingsIcon />} aria-label='Search database' />
+          </Link>
+
         </HStack>
 
       <Box p={4} maxWidth="200%" mx="auto">
-      <form onSubmit={handleSubmit}>
-        {/* ... (Previous form content) ... */}
-
-        {/* Add Subevent Button with Popover Form */}
+      <form onSubmit={handleSubeventSubmit}>
         <Popover>
           <PopoverTrigger>
             <Center><Button colorScheme="purple" mt={4}>
@@ -85,8 +115,7 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 <Input
                   id="subeventName"
                   placeholder="Enter subevent name"
-                  value={newSubevent.name}
-                  onChange={(e) => setNewSubevent({ ...newSubevent, name: e.target.value })}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
                   required
                 />
               </FormControl>
@@ -95,8 +124,7 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 <Input
                   id="subeventLocation"
                   placeholder="Enter subevent location"
-                  value={newSubevent.location}
-                  onChange={(e) => setNewSubevent({ ...newSubevent, location: e.target.value })}
+                  onChange={(e) => handleInputChange('location', e.target.value)}
                   required
                 />
               </FormControl>
@@ -105,8 +133,7 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 <Input
                   id="subeventDescription"
                   placeholder="Enter subevent description"
-                  value={newSubevent.description}
-                  onChange={(e) => setNewSubevent({ ...newSubevent, description: e.target.value })}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
                   required
                 />
               </FormControl>
@@ -115,17 +142,18 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 <Input
                   id="subeventTime"
                   placeholder="Enter subevent time"
-                  value={newSubevent.time}
-                  onChange={(e) => setNewSubevent({ ...newSubevent, time: e.target.value })}
+                  onChange={(e) => handleInputChange('time', e.target.value)}
                   required
                 />
               </FormControl>
-              <Button type="button" colorScheme="blue" onClick={handleSubeventSubmit}>
+              <Button colorScheme="blue" type='submit'>
               Subevent
               </Button>
             </PopoverBody>
+           
           </PopoverContent>
         </Popover>
+        </form>
 
         {/* Section to display all subevents */}
         <Box mt={4} border={"1px"} borderColor="gray.200" padding="4" borderRadius="md" width={{ base: "100%", md:"800px"}} height={"400px"}>
@@ -135,16 +163,18 @@ const [phoneNumber, setPhoneNumber] = useState('');
           <Text fontSize="lg" fontWeight="bold">
               All Subevents
           </Text>
+          </Center>
             <List>
-              {subevents.map((subevent, index) => (
-                <ListItem key={index}>
-                  {subevent.name} - {subevent.location} - {subevent.description} - {subevent.time}
+              {Array.isArray(subevents) && subevents.map(subevent => (
+                <ListItem  key={subevent.id}>
+                  <Box><Text fontSize="md" fontWeight="bold">{subevent.event_name}</Text>
+                  <h2>{subevent.location} - {subevent.event_description} - {subevent.start_date}</h2>
+                  </Box>
                 </ListItem>
               ))}
             </List>
-          </Center>
+          
         </Box>
-      </form>
     </Box>
 
 </VStack>

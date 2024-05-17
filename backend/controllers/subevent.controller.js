@@ -5,17 +5,18 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const addsubevent = asyncHandler(async (req, res) => {
-    const{eventname, eventdescription, location, time} = req.body;
+    const{name, description, location, time} = req.body;
 
-    const event_id= req.params;
+    const {id}= req.params;
 
-    if(!eventname || !eventdescription || !location || !time){
+    console.log(req.body);
+    if(!name || !description || !location || !time){
         throw new ApiError(400, "All fields are required");
     }
 
-    const insertQuery = `INSERT INTO subEvents (event_name, event_description, location, start_date) VALUES (?, ?, ?, ?);`; 
+    const insertQuery = `INSERT INTO subEvents (event_name, event_description, location, start_date, event_id) VALUES (?, ?, ?, ?, ?);`; 
 
-    await db.promise().query(insertQuery, [eventname, eventdescription, location,time, event_id]);
+    await db.promise().query(insertQuery, [name, description, location,time, id]);
 
     return res
     .status(201)
@@ -28,11 +29,11 @@ const getsubEventbyid = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const getEventQuery = `SELECT * FROM subEvents WHERE event_id = ?;`;
     const [rows] = await db.promise().query(getEventQuery, [id]);
-    const event = rows[0];
+    const event = rows;
     if (!event) {
         throw new ApiError(404, "Event not found");
     }
-    return res.status(200).json(new ApiResponse(200, "Event fetched successfully", event));
+    return res.status(200).json(new ApiResponse(200, event, "Event fetched successfully"));
 });
 
 export { addsubevent, getsubEventbyid };
