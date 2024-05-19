@@ -33,24 +33,18 @@ Memories is a comprehensive event management app built with React. It helps even
 ### Homepage
 
 The homepage provides an overview of what Memories can do. It highlights the key features and benefits of using the app, including seamless event management, media sharing, guest interaction, and more.
-![alt text](s1.png)
-![alt text](s2.png)
-![alt text](s3.png)
 
 ### Login Page
 
 Users can log into their accounts using their email and password. The login page ensures secure access to personal and event data.
-![alt text](s4.png)
 
 ### Register Page
 
 New users can create an account by providing necessary details such as name, email, and password. The registration process is straightforward and user-friendly.
-![alt text](s5.png)
 
 ### Dashboard
 
 The dashboard is the central hub where users can see all their created events. Each event is displayed with its essential details, and users can navigate to specific event pages for more information and actions.
-![alt text](s7.png)
 
 ### Profile Update
 
@@ -59,17 +53,14 @@ Users can update their profile information, including name, email, and profile p
 ### Event Update
 
 Event organizers can update event details such as date, time, location, and description. This feature ensures that all information is accurate and up-to-date.
-![alt text](s6.png)
 
 ### Media Uploader
 
 Users can upload photos and videos related to their events. The media uploader supports various file formats and provides an easy way to share memories with guests.
-![alt text](s8.png)
 
 ### Sub Event Creation
 
 Organizers can create sub-events within a main event. This feature is useful for managing complex events with multiple sessions or activities.
-![alt text](s9.png)
 
 ### Guest Management
 
@@ -86,7 +77,7 @@ Users can share event details and mobile numbers with guests via WhatsApp, makin
 ### QR Code for Photo Uploads
 
 Guests can scan a QR code to upload the photos they took during the event. This feature encourages guests to share their perspectives and contribute to the event's photo collection.
-![alt text](s10.png)
+
 ### Access for Photographer and Co-host
 
 Event organizers can provide photographers and co-hosts with special URLs that grant them access to change event settings and timings. This ensures smooth coordination and management.
@@ -97,7 +88,7 @@ To install and run Memories locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Akash12233/memories.git
+   git clone https://github.com/yourusername/memories.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -109,7 +100,7 @@ To install and run Memories locally, follow these steps:
    ```
 4. Start the development server:
    ```bash
-   npm run dev
+   npm start
    ```
 
 ## Usage
