@@ -1,6 +1,6 @@
 import { Grid, GridItem ,Box, Input, Avatar, VStack, Text,Button,Flex,IconButton} from "@chakra-ui/react";
-import NavBar from './NavBar';  // Assuming NavBar and Column are components you've created
-import Column from './colmun';
+import NavBar from '../components/NavBar';  // Assuming NavBar and Column are components you've created
+import Column from '../components/colmun';
 import { AddIcon} from "@chakra-ui/icons";
 import { useRef ,useState, useEffect} from "react";
 import axios from "axios";
@@ -82,7 +82,7 @@ const Profile: React.FC =()=>{
         fontWeight='bold'
       >
         <GridItem pl='2' area={'header'}>
-          <NavBar />
+          <NavBar {...{profile:true,memories:true}} />
         </GridItem>
         <GridItem py={'10'} area={'nav'} h='100%' borderRightColor='purple.300' borderRightWidth='3px'  boxShadow="md" my={'10'} >
             <Column />

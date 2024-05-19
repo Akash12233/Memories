@@ -5,27 +5,26 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const addevent = asyncHandler(async (req, res) => {
-    const{event_name, event_description} = req.body;
+    const{event_name, event_description, event_type, start_date, end_date} = req.body;
     const user_id= req.user.id;
-    if(!event_name || !event_description){
+    if(!event_name || !event_description || !event_type || !start_date || !end_date){
         throw new ApiError(400, "All fields are required");
     }
+    const cohostid= req.user.id+ 10*event_name.length +100*event_description.length;
     const bannerLocalPath = req.files?.banner[0]?.path;
     
-    console.log(req.files, user_id, event_description, event_name);
     if (!bannerLocalPath) {
         throw new ApiError(400, "Banner file is required")
     }
 
     const banner_url = await uploadOnCloudinary(bannerLocalPath);
-    console.log(banner_url);
     if (!banner_url) {
         throw new ApiError(400, " Error in uploading cloudinary")
     }
 
-    const insertQuery = `INSERT INTO Events (event_name, event_description, banner_url, user_id) VALUES (?, ?, ?, ?);`; 
+    const insertQuery = `INSERT INTO Events (event_name, event_description, banner_url, user_id, event_type, cohostid, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`; 
 
-    await db.promise().query(insertQuery, [event_name, event_description, banner_url?.url, user_id]);
+    await db.promise().query(insertQuery, [event_name, event_description, banner_url?.url, user_id, event_type, cohostid, start_date,end_date]);
 
     return res.
     status(201).
@@ -54,4 +53,18 @@ const getEventbyuser = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, event, "Event fetched successfully"));
 });
 
-export { addevent, getEventbyid, getEventbyuser };
+const updateEvent = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { event_name, event_description, start_date, end_date } = req.body;
+    if (!event_name || !event_description || !start_date || !end_date) {
+        throw new ApiError(400, "All fields are required");
+    }
+
+    const updateQuery = `UPDATE Events SET event_name = ?, event_description = ? ,start_date = ?, end_date = ? WHERE id = ?;`;
+    await db.promise().query(updateQuery, [event_name, event_description,start_date, end_date, id]);
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "Event updated successfully"));
+});
+
+export { addevent, getEventbyid, getEventbyuser, updateEvent };

@@ -1,30 +1,38 @@
 import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner, List } from '@chakra-ui/react';
-import NavBar from './NavBar';  // Assuming NavBar and Column are components you've created
-import Column from './colmun';
+import NavBar from '../components/NavBar';  // Assuming NavBar and Column are components you've created
+import Column from '../components/colmun';
 import { SearchIcon, AddIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { Link, useNavigate } from 'react-router-dom';
+import PopupAlert from '../components/message';
 
 const Homepage = () => {
   
   const [events, setevent] = useState<any>([]);
   const navigate= useNavigate();
 
-  console.log("user");
+  const [search, setSearch] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
 
   
   useEffect(() => {
     // Fetch user data
     axios.get('/api/event/geteventbyuser')
     .then((response) => {
-      console.log(response.data.data);
       setevent(response.data.data);
     })
     .catch((error) => {
-      console.error(error);
-      //navigate(/);
+      if(error.message === 'Request failed with status code 401'){
+        navigate('/');
+      }
+      setError('Failed to fetch events');
+      
     });
     
   },[]);
@@ -43,18 +51,19 @@ const Homepage = () => {
         fontWeight='bold'
       >
         <GridItem pl='2' area={'header'}>
-          <NavBar />
+          <NavBar {...{ profile : true, memories : true}}/>
         </GridItem>
-        <GridItem py={'10'} area={'nav'} h='100%' borderRightColor='purple.300' borderRightWidth='3px'  boxShadow="md" my={'10'} >
-            <Column />
+        <GridItem py={'10'} area={'nav'}   h='100%' borderRightColor='purple.300' borderRightWidth='3px'  boxShadow="md" my={'10'} >
+        <Column />
         </GridItem>
         <GridItem area={'main'} py={'10'} px={'10'} h='100%' my={'10'}>
+          {error && <PopupAlert message={error} />}
                 <Box p="4">
                 <InputGroup>
                 <InputLeftElement pointerEvents="none">
                     <SearchIcon color="gray.300" />
                 </InputLeftElement>
-                <Input type="text" placeholder="Search..." />
+                <Input type="text" placeholder="Search..."  onChange={handleSearchChange}/>
                 </InputGroup>
                 <Link to="/event">
                 <Button mt="4" colorScheme="teal" leftIcon={<AddIcon />}>
@@ -63,9 +72,9 @@ const Homepage = () => {
                 </Link>
                 </Box>
                 <Box>
-                  {events? events.map((event: any) => (
+                  {events.length > 0 ? events.map((event: any) => (
                     <List key={event.id}>
-                    <Link to={`/eventhome/${event.id}`}>
+                    <Link to={`/eventhome/${event.id}/${event.user_id}`}>
                     <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" m="2">
                     <Image src={event.banner_url}/>
                     <Box p="4">
@@ -76,7 +85,7 @@ const Homepage = () => {
                   </Link>
                   </List>
                     
-                  )) : Spinner}
+                  )) : <Spinner/>}
                 </Box>
         </GridItem>
       </Grid>

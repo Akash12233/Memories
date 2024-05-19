@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Center, Heading,SimpleGrid,Text, Image ,Box, Flex} from '@chakra-ui/react'
+import { Center, Heading,SimpleGrid,Text, Image ,Box} from '@chakra-ui/react'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
@@ -14,10 +14,10 @@ const Firstpage: React.FC = () => {
     <Navbar/>
     
     <Center bg='white' color='black' textAlign="center" p={4} fontSize={{ base: '3xl', md: '5xl' }} fontWeight="bold">
-                New age event assistant & <br /> AI photo-sharing
+                New age event assistant 
             </Center>
 
-            <Center bg='white' color='black' height={100} fontSize={{ base: '2xl', md: '3xl' }} p={4}>
+            <Center bg='white' color='black' height={100} fontSize={{ base: '2xl', md: '3xl' }} p={4} m={6}>
                 Supercharging events for Organisers, Guests, Photographers and Event professionals
             </Center>
 
@@ -61,7 +61,7 @@ const Firstpage: React.FC = () => {
                             <Heading size='md' className='text-center'> AI Photo Sharing</Heading>
                         </CardHeader>
                         <CardBody>
-                            <Text className='text-center'>AI photo-sharing with 99.98% accuracy on Facial recognition. Now, your friends will never complain about not getting photos..</Text>
+                            <Text className='text-center'>Photo-sharing with 99.98% Seemless. Now, your friends will never complain about not getting photos..</Text>
                         </CardBody>
                         <CardFooter display="flex" justifyContent="center">
                             <Box borderWidth='1px' borderRadius='lg' overflow='hidden' ><Image src="./public/icon3.jpg"></Image></Box>

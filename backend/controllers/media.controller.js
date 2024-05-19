@@ -11,16 +11,16 @@ const addimage = asyncHandler(async (req, res) => {
     if (!images) {
         throw new ApiError(400, "Images file is required")
     }
-
     await Promise.all(images.map(async (image) => {
+        const size = image?.size;
         const imageLocalPath = image.path;
         console.log(imageLocalPath);
         const image_url = await uploadOnCloudinary(imageLocalPath);
         if (!image_url) {
             throw new ApiError(400, "Image file is required");
         }
-        const insertQuery = `INSERT INTO Images (imageurl, event_id) VALUES (?, ?);`;
-        await db.promise().query(insertQuery, [image_url.url, id]);
+        const insertQuery = `INSERT INTO Images (imageurl, image_size, event_id) VALUES (?, ?, ?);`;
+        await db.promise().query(insertQuery, [image_url.url,size,  id]);
     }));
     
 
@@ -39,13 +39,14 @@ const addvideo = asyncHandler(async (req, res) => {
 
     await Promise.all(videos.map(video => async () => {
         const videoLocalPath = video.path;
+        const size = video.size;
         const video_url = uploadOnCloudinary(videoLocalPath);
         if (!video_url) {
             throw new ApiError(400, "Video file is required")
         }
 
-        const insertQuery = `INSERT INTO Images (videourl, event_id) VALUES (?, ?);`;
-        await db.promise().query(insertQuery, [video_url.url, id]);
+        const insertQuery = `INSERT INTO Images (videourl,video_size,  event_id) VALUES (?, ?, ?);`;
+        await db.promise().query(insertQuery, [video_url.url,size,  id]);
     }));
 
     return res

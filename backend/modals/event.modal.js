@@ -6,8 +6,12 @@ const createEventQuery = async () => {
         id SERIAL PRIMARY KEY,
         event_name VARCHAR(100) NOT NULL,
         event_description TEXT,
+        event_type VARCHAR(100),
         banner_url VARCHAR(255),
-        user_id INT
+        user_id INT,
+        cohostid INT,
+        start_date Date,
+        end_date Date
     );
     
     `;

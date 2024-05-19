@@ -1,16 +1,12 @@
-import NavBar from "./NavBar";
-import NavBot from "./NavBot";
 import { Box, Divider, Button, Stack, HStack,VStack, Text, IconButton, Center,Heading ,Image, Input, Flex} from '@chakra-ui/react';
 import { DownloadIcon } from "@chakra-ui/icons";
 import { useState, useRef, useEffect } from "react";
-import { SettingsIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import {saveAs} from "file-saver";
-import { Link } from "react-router-dom";
 
-
-const Media: React.FC = () => {
+const  Urlmediapage = () => {
+    
     const [event, setEvent] = useState({});
     const [photos, setPhotos] = useState<any>([]);
     const [videos, setVideos] = useState<any>([]);
@@ -136,13 +132,9 @@ const Media: React.FC = () => {
   
     return (
      <>
-    <NavBar/>
     <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="100%" position="absolute" zIndex="-1" />
     <HStack width="100%" justifyContent="center" >
           <Heading>{event?.event_name }</Heading>
-          <Link to={`/general/${id}`}>
-            <IconButton icon={<SettingsIcon />} aria-label='Search database' />
-          </Link>
     </HStack>
 
     <Box p={4} borderWidth="1px" borderRadius="lg">
@@ -209,39 +201,48 @@ const Media: React.FC = () => {
               Videos
             </Button>
           </Stack>
-          <Box border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" height={"auto"}>
+          <Box border={"4px"} borderColor="gray.200" padding="4" borderRadius="md" height={"auto"} >
 
-            { (photos.length==0) && (videos.length==0 ) &&(
-              <Center><Text className="text-3xl" color={"purple"}>No Media</Text></Center>
-            )}
+        { (photos.length==0) && (videos.length==0 ) &&(
+          <Center><Text className="text-3xl" color={"purple"}>No Media</Text></Center>
+        )}
 
-          <Flex flexWrap="wrap" justifyContent="center" gap={4}>
-            {isPhotos && Array.isArray(photos) && photos.length > 0 && photos.map((photo) => (
-              <Box key={photo.id} width="300px" marginBottom="20px" border={"4px"} borderColor="pink.200"  borderRadius="md">
-                <a href={photo.imageurl} target="_blank" rel="noopener noreferrer">
+        <Flex
+        flexWrap="wrap"
+        justifyContent="center"
+        gap={4}
+        overflowY="auto" // or "scroll" depending on your preference
+        maxHeight="300px" // Adjust the height according to your needs
+        >
+        {isPhotos &&
+          Array.isArray(photos) &&
+          photos.length > 0 &&
+          photos.map((photo) => (
+            <Box key={photo.id} width="100px" marginBottom="2px" border="4px" borderRadius="md">
+              <a href={photo.imageurl} target="_blank" rel="noopener noreferrer">
                 <Image src={photo.imageurl} alt={`Photo ${photo.id}`} width="100%" />
-                </a>
-              </Box>
-            ))}
-          </Flex>
-
-          <Flex flexWrap="wrap" justifyContent="center" gap={4}>
-          { (isVideos) && Array.isArray(videos) &&videos.length > 0 && videos.map((video) => (
-            <video key={video.id} controls width="300">
-              <source src={video.videourl} type="video/mp4" />
-              Your browser does not support the video tag. 
-            </video>
+              </a>
+            </Box>
           ))}
-          </Flex>
-          </Box>
+        </Flex>
+
+
+        <Flex flexWrap="wrap" justifyContent="center" gap={4} overflowY="auto">
+        { (isVideos) && Array.isArray(videos) &&videos.length > 0 && videos.map((video) => (
+        <video key={video.id} controls width="300">
+          <source src={video.videourl} type="video/mp4" />
+          Your browser does not support the video tag. 
+        </video>
+        ))}
+        </Flex>
+        </Box>
         </Stack>
 
         
       </Stack>
     </Box>
-    <NavBot/>
     </>
     );
 };
 
-export default Media;
+export default Urlmediapage;

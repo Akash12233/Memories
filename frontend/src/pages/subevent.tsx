@@ -1,8 +1,6 @@
 import { VStack ,HStack,Heading,IconButton,Center} from "@chakra-ui/react";
-import NavBar from "./NavBar"
-import NavBot from "./NavBot"
 import { SettingsIcon } from "@chakra-ui/icons";
-import { useParams  } from 'react-router-dom';
+import { useNavigate, useParams  } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import {
   Box,
@@ -23,42 +21,47 @@ import {
 } from '@chakra-ui/react';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import PopupAlert from "../components/message";
 
 
 const Subevent: React.FC=()=>{
 
   const [event, setEvent] = useState({});
   const [subevents, setSubevent]=useState([]);
-
+  const navigate = useNavigate();
+  const settings =localStorage.getItem("settings") ? JSON.parse(localStorage.getItem("settings")) : null;
   const [formdata, setFormData] = useState({
     name: '',
     location: '',
     description: '',
     time: ''
   });
+  const [error, setError] = useState('');
 
-  const {id} = useParams();
+
+
+  const {id1, id2} = useParams();
     useEffect(() => {
       // Fetch user data
-      axios.get(`/api/event/geteventbyid/${id}`)
+      axios.get(`/api/event/geteventbyid/${id1}`)
         .then((response) => {
           console.log(response.data.data);
           setEvent(response.data.data);
         })
         .catch((error) => {
           console.error(error);
-          //navigate("/");
         });
     },[]);
 
     useEffect(() => {
-      axios.get(`/api/subevent/getsubEventbyid/${id}`)
+      axios.get(`/api/subevent/getsubEventbyid/${id1}`)
         .then((response) => {
           console.log(response.data.data);
           setSubevent(response.data.data);
         })
         .catch((error) => {
           console.error(error);
+          setError("Error fetching subevents");
           //navigate("/");
         });
     },[])
@@ -71,28 +74,36 @@ const Subevent: React.FC=()=>{
   const handleSubeventSubmit = (e) => {
     e.preventDefault();
     console.log(formdata);
-    axios.post(`/api/subevent/addsubevent/${id}`, formdata,
+    axios.post(`/api/subevent/addsubevent/${id1}`, formdata,
     
   )
-    .then((response) => {
+  .then((response) => {
       console.log(response.data);
+      setError("Subevent added successfully");
     })
-    .catch((error) => {
+  .catch((error) => {
       console.error(error);
+      setError("Error adding subevent");
     });
     
   };
+  if(id2 != event?.user_id){
+    if(id2 != event?.cohostid){
+      navigate("/");
+    }
+  }
 
     return(
         <>
-        <NavBar/>
         <Box bgGradient="linear(to-b, purple.400, pink.300)" w="100%" h="80%" position="absolute" zIndex="-1" />
         <VStack>
+          {error && <PopupAlert message={error} />}
         <HStack width="100%" justifyContent="center" >
           <Heading>{event.event_name}</Heading>
-          <Link to={`/general/${id}`}>
+          {settings &&
+          <Link to={`/general/${id1}`}>
             <IconButton icon={<SettingsIcon />} aria-label='Search database' />
-          </Link>
+          </Link>}
 
         </HStack>
 
@@ -178,8 +189,7 @@ const Subevent: React.FC=()=>{
     </Box>
 
 </VStack>
-        <NavBot/>
-        </>
+</>
     )
 }
 

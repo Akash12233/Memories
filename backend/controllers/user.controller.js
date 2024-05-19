@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 
 const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
@@ -297,6 +297,20 @@ const updateAccountDetails = asyncHandler( async (req, res) => {
     if ([firstname, lastname, email, mobilenumber].some((field) => !field || field.trim() === "")) {
         throw new Error("All fields are required");
     } 
+
+    const avatar_todelete = req.user.avatar_url;
+    console.log(avatar_todelete);
+
+    if (avatar_todelete != undefined){
+        const response= await deleteOnCloudinary(avatar_todelete);
+
+        if(!response){
+            throw new ApiError(400, "Error in deleting cloudinary")
+        }
+    }
+    
+    
+    
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
     if (!avatarLocalPath) {

@@ -5,6 +5,7 @@ const createimageQuery = async () => {
     CREATE TABLE IF NOT EXISTS Images (
         id SERIAL PRIMARY KEY,
         imageurl varchar(255),
+        image_size int,
         event_id int
     );
     

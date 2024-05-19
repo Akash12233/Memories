@@ -24,13 +24,13 @@ const Navbar: React.FC = () => {
                         </PopoverTrigger>
                         <PopoverContent>
                             <Box>
-                                <Link to="/pricing" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded"><PopoverHeader fontWeight='semibold'>Personal</PopoverHeader></Link>
-                                <Link to="/pricing" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded"><PopoverHeader fontWeight='semibold'>Business</PopoverHeader></Link>
+                                <Link to="/errorpage" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded"><PopoverHeader fontWeight='semibold'>Personal</PopoverHeader></Link>
+                                <Link to="/errorpage" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded"><PopoverHeader fontWeight='semibold'>Business</PopoverHeader></Link>
                             </Box>
                         </PopoverContent>
                     </Popover>
-                    <Link to="/faq" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded">FAQ</Link>
-                    <Link to="/about" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded">About Us</Link>
+                    <Link to="/" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded">FAQ</Link>
+                    <Link to="/" className="block md:inline-block hover:bg-white hover:text-purple-500 p-4 rounded">About Us</Link>
                 </div>
                 <div>
                     <Link to="/loginpage" className="block md:inline-block">

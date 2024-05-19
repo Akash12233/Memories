@@ -5,6 +5,7 @@ const createVideoQuery = async () => {
     CREATE TABLE IF NOT EXISTS Video (
         id SERIAL PRIMARY KEY,
         videourl varchar(255),
+        vide_size int,
         event_id int
     );
     

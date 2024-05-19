@@ -30,5 +30,7 @@ app.use("/api/guest", guestrouter);
 import subeventrouter from "./routes/subevent.route.js";
 app.use("/api/subevent", subeventrouter);
 
+import generalrouter from "./routes/general.route.js";
+app.use("/api/general", generalrouter);
 
 export {app}

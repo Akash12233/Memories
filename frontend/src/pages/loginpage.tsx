@@ -2,8 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { Center, Heading,Text, Image ,Box, Stack,Button ,FormControl, FormLabel, Input, InputGroup, InputRightElement} from '@chakra-ui/react'
 import { Card,  CardBody } from '@chakra-ui/react'
-import Navbar from '../Navbar';
-import Footer from '../Fotter';
+import Navbar from '../Navbar.tsx';
+import Footer from '../Fotter.tsx';
 import {
     FormErrorMessage, FormHelperText } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';

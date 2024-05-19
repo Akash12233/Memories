@@ -5,25 +5,25 @@ const Column :React.FC=()=>{
 
     return(
         <>
-            <Flex direction="column">
+            <Flex direction="column" >
             <Box p="4" mb="4" >
             <Link to="/homepage" className="hover:bg-white hover:text-purple-500 ">
                 <Flex align={'center'}>
-                        <Image src="./public/icon8.png" alt="Profile Icon" boxSize="4" mr="2" /> Dashboard
+                        <Image src="/icon8.png" alt="Profile Icon" boxSize="4" mr="2" /> Dashboard
                 </Flex>
                 </Link>
             </Box>
             <Box p="4" mb="4"  >
             <Link to="/profile" className="hover:bg-white hover:text-purple-500">
                 <Flex align={'center'}>
-                            <Image src="./public/profile.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Profile
+                            <Image src="/profile.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Profile
                 </Flex>
                 </Link>
             </Box>
             <Box p="4" mb="4" >
-            <Link to="/myaccount" className="hover:bg-white hover:text-purple-500">
+            <Link to="/errorpage" className="hover:bg-white hover:text-purple-500">
                 <Flex align={'center'}>
-                            <Image src="./public/myaccount.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Myaccount
+                            <Image src="/myaccount.jpg" alt="Profile Icon" boxSize="4" mr="2" /> Myaccount
                 </Flex>
                 </Link>
             </Box>

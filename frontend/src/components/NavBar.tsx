@@ -6,7 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext.tsx";
 import { useNavigate } from "react-router-dom";
 
 
-const NavBar: React.FC=()=>{
+const NavBar: React.FC=({ profile, memories })=>{
     const [user, setUser] = useState<any>(null);
     let userImage ="/icon7.jpg";
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const NavBar: React.FC=()=>{
             console.log(error);
         })
     }, []);
-    
+    const link = memories ? '/homepage' : '/';
     userImage=user?.avatar_url? user?.avatar_url : userImage;
 
     const handlelogout = () => {
@@ -36,7 +36,7 @@ const NavBar: React.FC=()=>{
     
         })
         .catch(error => {
-            console.log(error);
+            console.log(error.message);
         })
     }
 
@@ -44,7 +44,8 @@ const NavBar: React.FC=()=>{
     return (
         <>
             <Box className="bg-white-500 p-4 text-silver flex justify-between " boxShadow="md">
-            <Link to="/homepage" className="text-3xl font-extrabold italic text-purple-300 hover:bg-white hover:text-purple-500 p-2 rounded">Memories</Link>
+            <Link to={link} className="text-3xl font-extrabold italic text-purple-300 hover:bg-white hover:text-purple-500 p-2 rounded">Memories</Link>
+            {profile && 
             <Popover>
             <PopoverTrigger>
                 <Flex align={'center'}>
@@ -83,6 +84,8 @@ const NavBar: React.FC=()=>{
                 </PopoverBody>
             </PopoverContent>
             </Popover>
+            }
+
             </Box>
         </>
     )
