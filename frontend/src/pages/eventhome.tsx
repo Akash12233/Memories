@@ -107,16 +107,15 @@ const Eventhome: React.FC = () => {
           <VStack align="start" spacing="4" width={{ base: "300px", md: "600px" }} padding="4" borderRadius="md" bg="white" boxShadow="xl">
             {error && <PopupAlert message={error} />}
             {/* Header */}
-            <Center width="100">
+            <Center width="100%">
               <Heading size="lg" >
               <Input type="text"  placeholder={event? event.event_name : "Event Name"} onChange={(e) => handleInputChange('eventName', e.target.value)} /> 
               </Heading>
               {settings &&
               <Link to={`/general/${id1}`}>
-            <IconButton icon={<SettingsIcon />} aria-label='Search database' />
-          </Link>}
-
-              </Center>
+                  <IconButton icon={<SettingsIcon />} aria-label='Search database' />
+              </Link>}
+          </Center>
 
             <Center width="100%"  onClick={handleFileChange}>
             <Box  padding="4" borderRadius="md" bg="gray.100">

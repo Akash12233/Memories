@@ -1,4 +1,4 @@
-import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner, List } from '@chakra-ui/react';
+import { ChakraProvider,  Grid, GridItem, Box,Button, Input, InputGroup, InputLeftElement, Image,Text, Spinner, SimpleGrid } from '@chakra-ui/react';
 import NavBar from '../components/NavBar';  // Assuming NavBar and Column are components you've created
 import Column from '../components/colmun';
 import { SearchIcon, AddIcon } from '@chakra-ui/icons';
@@ -72,20 +72,27 @@ const Homepage = () => {
                 </Link>
                 </Box>
                 <Box>
-                  {events.length > 0 ? events.map((event: any) => (
-                    <List key={event.id}>
-                    <Link to={`/eventhome/${event.id}/${event.user_id}`}>
-                    <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" m="2">
-                    <Image src={event.banner_url}/>
-                    <Box p="4">
-                      <Text fontSize="xl" fontWeight="bold" mb="2">{event.event_name}</Text>
-                      <Text fontSize="sm" color="gray.500" mb="2">{event.event_description}</Text>                    
-                    </Box>
-                  </Box>
-                  </Link>
-                  </List>
-                    
-                  )) : <Spinner/>}
+                {events.length > 0 ? (
+                  <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
+                    {events.map((event: any) => (
+                      <Box as="article" key={event.id} maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" m="2">
+                        <Link to={`/eventhome/${event.id}/${event.user_id}`}>
+                          <Image src={event.banner_url} alt={event.event_name} />
+                          <Box p="4">
+                            <Text fontSize="xl" fontWeight="bold" mb="2">
+                              {event.event_name}
+                            </Text>
+                            <Text fontSize="sm" color="gray.500" mb="2">
+                              {event.event_description}
+                            </Text>
+                          </Box>
+                        </Link>
+                      </Box>
+                    ))}
+                  </SimpleGrid>
+                ) : (
+                  <Spinner />
+                )}
                 </Box>
         </GridItem>
       </Grid>
