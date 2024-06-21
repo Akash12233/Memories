@@ -137,9 +137,11 @@ const login = async(e) =>{
                         </form>
                         <Box textAlign='center' mt='4'>
                             <Text>----------------Continue with----------------</Text>
+                            <Link to={"/errorpage"}>
                             <Button variant='solid' colorScheme='purple' textAlign='center' m='2'>
                                 Google
                             </Button>
+                            </Link>    
                         </Box>
                         <Card >
                             <Center py='4'>
