@@ -135,7 +135,7 @@ We welcome contributions to improve Memories. To contribute, please fork the rep
 
 ## License
 
-Memories is licensed under the MIT License. See the LICENSE file for more details.
+Memories is licensed.
 
 ---
 
